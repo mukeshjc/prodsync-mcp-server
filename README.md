@@ -44,16 +44,9 @@ DATADOG_APP_KEY=<your_datadog_app_key>
 
 ## Integration with IDEs and AI chat applications
 
-You can run this MCP server using npx for both local development and after publishing to GitHub.
+Add or update the MCP server section like below in respective json file location based on your setup:
 
-### Claude Desktop
-For MacOS, edit the config file at:
-```
-~/Library/Application Support/Claude/claude_desktop_config.json
-```
-Add or update the MCP server section:
-
-#### For local development (after build):
+### For local development (after executing "npm run build" atleast once on the project workspace):
 ```json
 {
   "mcpServers": {
@@ -69,6 +62,18 @@ Add or update the MCP server section:
     }
   }
 }
+```
+
+#### Claude Desktop
+For MacOS, edit the config file at:
+```
+~/Library/Application Support/Claude/claude_desktop_config.json
+```
+
+#### Cursor IDE
+For MacOS, edit the config file at:
+```
+~/.cursor/mcp.json
 ```
 
 ---
