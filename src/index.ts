@@ -128,10 +128,34 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         });
         debugLog(`Datadog response: ${JSON.stringify(response.data, null, 2)}`);
 
+        const simplifiedLogs = (response.data ?? []).map((log: any) => ({
+          // Error Information
+          status: log.attributes?.status,
+          message: log.attributes?.msg || log.attributes?.message,
+          error: log.attributes?.attributes?.error || "No error details available",
+
+          // Service Components and Cadence
+          activityType: log.attributes?.attributes?.ActivityType,
+          workflowId: log.attributes?.attributes?.WorkflowID,
+          taskList: log.attributes?.attributes?.TaskList,
+          workerId: log.attributes?.attributes?.WorkerID,
+          timestamp: log.attributes?.timestamp,
+          domain: log.attributes?.attributes?.Domain,
+          runId: log.attributes?.attributes?.RunID,
+
+          // Infrastructure
+          host: log.attributes?.host,
+          hostname: log.attributes?.attributes?.hostname,
+
+          // Additional Debugging Information
+          caller: log.attributes?.attributes?.caller,
+          stacktrace: log.attributes?.attributes?.stacktrace
+        }));
+
         return {
           content: [{
             type: "text",
-            text: JSON.stringify(response.data, null, 2)
+            text: JSON.stringify(simplifiedLogs, null, 2)
           }]
         };
       } catch (error: unknown) {
